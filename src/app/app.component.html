@@ -32,7 +32,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <button mat-flat-button color="primary" (click)="editRow(null)">Добавить урок</button>
+    <button mat-flat-button class="add-button" color="primary" (click)="editRow(null)">Добавить урок</button>
   </div>
   <div *ngIf="formVisible" class="form-container">
     <div class="editableForm">

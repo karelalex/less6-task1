@@ -1,5 +1,6 @@
 .mainTable {
-  width: 100%;
+  width: 90%;
+  margin: auto;
 }
 
 .form-container {
@@ -8,7 +9,7 @@
   bottom: 0;
   width: 100%;
   padding-top: 200px;
-  background-color: rgba(125,125,152,0.3);
+  background-color: rgba(125,125,152,0.8);
 }
 
 .editableForm {
@@ -19,8 +20,17 @@
   border-radius: 20px;
   border-style: solid;
   border-width: 2px;
+  background-color: #cfe8ff;
 }
 
 .full-width {
   width: 100%;
+}
+.mat-cell, .mat-header-cell {
+  padding: 7px;
+}
+
+.add-button {
+  margin-left: 5%;
+  margin-top: 30px;
 }
