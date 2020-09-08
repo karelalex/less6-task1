@@ -1,0 +1,26 @@
+.mainTable {
+  width: 100%;
+}
+
+.form-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  padding-top: 200px;
+  background-color: rgba(125,125,152,0.3);
+}
+
+.editableForm {
+  margin: auto;
+  width: 900px;
+  padding: 50px;
+  border-color: red;
+  border-radius: 20px;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.full-width {
+  width: 100%;
+}
