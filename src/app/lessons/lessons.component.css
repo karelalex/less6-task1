@@ -1,0 +1,12 @@
+.mat-cell, .mat-header-cell {
+  padding: 7px;
+}
+.mainTable {
+  width: 90%;
+  margin: 20px auto 0;
+}
+
+.add-button {
+  margin-left: 5%;
+  margin-top: 30px;
+}

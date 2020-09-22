@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {v4 as uuidV4} from 'uuid';
-import {MatTable} from '@angular/material/table';
-import moment from 'moment';
+import {MatTabChangeEvent, MatTabGroup} from '@angular/material/tabs';
 
 export interface Lesson {
   id: string;
@@ -11,6 +10,14 @@ export interface Lesson {
   notes?: string;
 }
 
+export interface Student {
+  id: string;
+  name?: string;
+  surname?: string;
+  patronymic?: string;
+  marks?: Record<string, number>;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,56 +25,55 @@ export interface Lesson {
 })
 export class AppComponent implements OnInit{
   title = 'less4-task1';
+  @ViewChild('Tabs') tabs: MatTabGroup;
+  tabIndex: number;
+  editingLessonId: string;
+  editingStudentId: string;
+  students: Student[] = [];
   lessons: Lesson[]  = [
     {id: uuidV4(),  date: new Date(), theme: 'Как ангулярить', homework: 'сделать всё', notes: 'Было здорово'},
     {id: uuidV4(),  date: new Date() , theme: 'Как ангулярить ещё лучше', homework: 'сделать опять всё', notes: 'Было ещё более здорово'},
   ];
-  displayedColumns = [
-    'number', 'date', 'theme', 'homework', 'notes', 'edit'
-  ];
-  formVisible = false;
-  editingLesson = {} as any;
-  @ViewChild('lessonTable') lessonTable: MatTable<Lesson>;
+
   ngOnInit(): void {
+   this.loadLessons();
+   this.loadStudents();
+  }
+
+  private loadStudents(): void {
+    this.students = JSON.parse(localStorage.getItem('studentList')) || [];
+  }
+
+  onFinishLessonEditing(): void {
+    this.editingLessonId = null;
+    this.tabIndex = 0;
+    this.loadLessons();
+  }
+
+  loadLessons(): void {
     const recoveredLessons = JSON.parse(localStorage.getItem('lessonList'));
     this.lessons = recoveredLessons.map((item) => {
       return {...item, date: new Date(item.date)};
     });
   }
 
-  editRow = (id) => {
-    if (id) {
-      const lessonToEdit = this.lessons.find((item) => item.id === id);
-      this.editingLesson = {...lessonToEdit, date: moment(lessonToEdit.date).format('YYYY-MM-DD')};
-    } else {
-      this.editingLesson = {id: uuidV4()};
-    }
-    this.formVisible = true;
+  onStartEditLesson(id: string): void {
+    this.editingLessonId = id;
+    this.tabIndex = 2;
   }
 
-  afterEdit = () => {
-    const index = this.lessons.findIndex((item) => this.editingLesson.id === item.id);
-    const lessonToSave = {...this.editingLesson, date: new Date(this.editingLesson.date)};
-    if (index < 0) {
-      this.lessons.push(lessonToSave);
-    } else {
-      this.lessons[index] = lessonToSave;
-    }
-    this.formVisible = false;
-    localStorage.setItem('lessonList', JSON.stringify(this.lessons.sort((a, b) => (a.date.getTime() - b.date.getTime()))));
-    this.lessonTable.renderRows();
-}
-  cancelEdit = () => {
-    this.formVisible = false;
-    this.lessonTable.renderRows();
+  onStartEditingStudent(id: string): void {
+    this.editingStudentId = id;
+    this.tabIndex = 3;
   }
 
-  deleteLesson = (id) => {
-    this.formVisible = false;
-    this.lessons = this.lessons.filter((item) => item.id !== id);
-    localStorage.setItem('lessonList', JSON.stringify(this.lessons.sort((a, b) => (a.date.getTime() - b.date.getTime()))));
-    this.lessonTable.renderRows();
+  onStudentListChanged(studentList: Student[]): void {
+    this.students = studentList;
   }
 
-
+  onFinishStudentEditing(): void {
+    this.editingStudentId = null;
+    this.loadStudents();
+    this.tabIndex = 1;
+  }
 }

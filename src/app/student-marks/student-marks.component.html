@@ -1,0 +1,55 @@
+<div>
+  <table mat-table [dataSource]="tableStudents" class="mainTable" #markTable>
+    <ng-container matColumnDef="number">
+      <th mat-header-cell *matHeaderCellDef> No.</th>
+      <td mat-cell *matCellDef="let element; let i = index"> {{i+1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="student">
+      <th mat-header-cell *matHeaderCellDef> ФИО обучающегося</th>
+      <td mat-cell *matCellDef="let element"> {{formatName(element)}} </td>
+    </ng-container>
+
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.name">
+      <th mat-header-cell *matHeaderCellDef> <p>{{column.header.date}}</p><p>{{column.header.theme}}</p></th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field appearance="fill" *ngIf="!element.marks[column.name]">
+          <mat-label>Оценка</mat-label>
+          <mat-select [(ngModel)]="element.marks[column.name]" (ngModelChange)="saveStudentList()">
+            <mat-option *ngFor="let mark of marks" [value]="mark">
+              {{mark}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="!!element.marks[column.name]"> {{element.marks[column.name]}} </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="average">
+      <th mat-header-cell *matHeaderCellDef>Средняя оценка</th>
+      <td mat-cell *matCellDef="let element">
+        {{calculateAverage(element, 2)}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="averageInt">
+      <th mat-header-cell *matHeaderCellDef>Средняя целая оценка</th>
+      <td mat-cell *matCellDef="let element">
+        {{calculateAverage(element)}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="editRow(element.id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+  </table>
+  <button mat-flat-button class="add-button" color="primary" (click)="editRow(null)">Добавить ученика</button>
+</div>

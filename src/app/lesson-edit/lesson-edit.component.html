@@ -1,0 +1,21 @@
+<div class="editableForm">
+  <mat-form-field class="date-width">
+    <mat-label>Дата урока</mat-label>
+    <input type="date" matInput placeholder="Введите тему" [(ngModel)]="editingLesson.date">
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Тема урока</mat-label>
+    <input type="text" matInput placeholder="Введите тему" [(ngModel)]="editingLesson.theme">
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Домашнее задание</mat-label>
+    <textarea matInput placeholder="Введите задание" [(ngModel)]="editingLesson.homework"></textarea>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Примечание</mat-label>
+    <textarea matInput placeholder="Введите заметку" [(ngModel)]="editingLesson.notes"></textarea>
+  </mat-form-field>
+  <button mat-flat-button color="primary" (click)="afterEdit()">Применить</button>
+  <button mat-flat-button color="warn" (click)="deleteLesson(editingLesson.id)">Удалить</button>
+  <button mat-flat-button color="basic" (click)="cancelEdit()">Отменить</button>
+</div>

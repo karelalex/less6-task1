@@ -1,36 +1,4 @@
-.mainTable {
-  width: 90%;
-  margin: auto;
-}
 
-.form-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  padding-top: 200px;
-  background-color: rgba(125,125,152,0.8);
-}
 
-.editableForm {
-  margin: auto;
-  width: 900px;
-  padding: 50px;
-  border-color: red;
-  border-radius: 20px;
-  border-style: solid;
-  border-width: 2px;
-  background-color: #cfe8ff;
-}
 
-.full-width {
-  width: 100%;
-}
-.mat-cell, .mat-header-cell {
-  padding: 7px;
-}
 
-.add-button {
-  margin-left: 5%;
-  margin-top: 30px;
-}

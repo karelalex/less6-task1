@@ -1,0 +1,19 @@
+.editableForm {
+  min-width: 150px;
+  width: 80%;
+  padding: 50px;
+  margin: 50px auto auto;
+  border-color: #bc896d;
+  border-radius: 15px;
+  border-style: solid;
+  border-width: 2px;
+  background-color: #f3f6f8;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-flat-button {
+  margin-right: 20px;
+}
