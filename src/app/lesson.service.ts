@@ -29,7 +29,7 @@ export class LessonService {
   }
 
   loadLessons = (): void => {
-    const recoveredLessons = JSON.parse(localStorage.getItem('lessonList'));
+    const recoveredLessons = JSON.parse(localStorage.getItem('lessonList')) || [];
     this.lessons = recoveredLessons.map((item) => {
       return {...item, date: new Date(item.date)};
     });
