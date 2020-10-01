@@ -1,28 +1,22 @@
 <mat-tab-group #Tabs [(selectedIndex)]="tabIndex">
   <mat-tab label="Таблица уроков">
     <app-lessons
-      [lessons]="lessons"
       (editLesson)="onStartEditLesson($event)"
     ></app-lessons>
   </mat-tab>
   <mat-tab label="Таблица оценок">
     <app-student-marks
-      [lessons]="lessons"
-      [students]="students"
       (editStudent)="onStartEditingStudent($event)"
-      (changedStudentList)="onStudentListChanged($event)"
     ></app-student-marks>
   </mat-tab>
   <mat-tab [label]="editingLessonId ? 'Редактирование урока' : 'Добавление урока'">
     <app-lesson-edit
-      [lessons]="lessons"
       [lessonId]="editingLessonId"
       (finishEdit)="onFinishLessonEditing()"
     ></app-lesson-edit>
   </mat-tab>
   <mat-tab [label]="editingStudentId ? 'Редактирование данных студента' : 'Добавление студента'">
     <app-student-edit
-      [students]="students"
       [studentId]="editingStudentId"
       (finishEdit)="onFinishStudentEditing()"
       ></app-student-edit>
