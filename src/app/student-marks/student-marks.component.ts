@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} fr
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {Student, StudentService} from '../student.service';
 import {Lesson, LessonService} from '../lesson.service';
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-student-marks',
@@ -43,10 +43,10 @@ export class StudentMarksComponent implements OnInit{
             surname: [student.surname],
             patronymic: [student.patronymic],
             marks: this.build.group(this.lessonService.lessons.reduce(
-              (acc , cur) => ({...acc, [cur.id]: [student.marks[cur.id]]}), {}
+              (acc , cur) => ({...acc, [cur.id]: [student.marks[cur.id], [Validators.required]]}), {}
             )),
-            average: [this.studentService.calculateAverage(student, 2)],
-            weakAverage: [this.studentService.calculateAverage(student)]
+            average: [this.studentService.calculateAverage(student, 2), [Validators.pattern(/^-?(\d+)(\.\d+)?$/)]],
+            weakAverage: [this.studentService.calculateAverage(student), [Validators.pattern(/^(\d+)$/)]]
           });
         }
     ))});

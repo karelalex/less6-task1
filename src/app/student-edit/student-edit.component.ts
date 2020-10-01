@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, Output, SimpleChanges, EventEmitter} from '@angular/core';
 import {Student, StudentService} from '../student.service';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-student-edit',
@@ -13,9 +13,9 @@ export class StudentEditComponent implements OnChanges {
   constructor(private studentService: StudentService) { }
   studentForm: FormGroup = new FormGroup({
     id: new FormControl(''),
-    name: new FormControl(),
-    surname: new FormControl(),
-    patronymic: new FormControl(),
+    name: new FormControl(undefined, [Validators.required, Validators.pattern(/[А-Яа-я]+/)]),
+    surname: new FormControl(undefined, [Validators.required, Validators.pattern(/[А-Яа-я]+/)]),
+    patronymic: new FormControl(undefined, [Validators.required, Validators.pattern(/[А-Яа-я]+/)]),
   });
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.studentId) {return; }

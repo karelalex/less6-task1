@@ -3,18 +3,55 @@
     <mat-form-field class="full-width">
       <mat-label>Номер урока</mat-label>
       <input type="text" matInput placeholder="Введите номер" formControlName="number">
+      <mat-error
+        *ngIf="lessonForm.controls.number.errors && lessonForm.controls.number.errors.required"
+      >Это обязательное поле
+      </mat-error>
+      <mat-error
+        *ngIf="lessonForm.controls.number.errors && lessonForm.controls.number.errors.pattern"
+      >Поле может содержать только цифры
+      </mat-error>
+      <mat-error
+        *ngIf="lessonForm.controls.number.errors && lessonForm.controls.number.errors.min"
+      >Номер должен быть положительным числом
+      </mat-error>
+
     </mat-form-field>
     <mat-form-field class="date-width">
       <mat-label>Дата урока</mat-label>
       <input type="date" matInput placeholder="Введите тему" formControlName="date">
+      <mat-error
+        *ngIf="lessonForm.controls.date.errors && lessonForm.controls.date.errors.required"
+      >Это обязательное поле
+      </mat-error>
+      <mat-error
+        *ngIf="lessonForm.controls.date.errors && lessonForm.controls.date.errors.wrongDate"
+      >Дата должна быть равна или быть позднее текущей
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
       <mat-label>Тема урока</mat-label>
       <input type="text" matInput placeholder="Введите тему" formControlName="theme">
+      <mat-error
+        *ngIf="lessonForm.controls.theme.errors && lessonForm.controls.theme.errors.required"
+      >Это обязательное поле
+      </mat-error>
+      <mat-error
+        *ngIf="lessonForm.controls.theme.errors && lessonForm.controls.theme.errors.pattern"
+      >Введите текст
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
       <mat-label>Домашнее задание</mat-label>
       <textarea matInput placeholder="Введите задание" formControlName="homework"></textarea>
+      <mat-error
+        *ngIf="lessonForm.controls.homework.errors && lessonForm.controls.homework.errors.required"
+      >Это обязательное поле
+      </mat-error>
+      <mat-error
+        *ngIf="lessonForm.controls.homework.errors && lessonForm.controls.homework.errors.pattern"
+      >Введите текст
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
       <mat-label>Примечание</mat-label>
@@ -25,3 +62,4 @@
     <button mat-flat-button color="basic" (click)="cancelEdit()">Отменить</button>
   </form>
 </div>
+

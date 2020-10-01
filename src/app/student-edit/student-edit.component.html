@@ -3,14 +3,38 @@
     <mat-form-field class="full-width">
       <mat-label>Фамилия</mat-label>
       <input type="text" matInput placeholder="Введите фамилию" formControlName="surname">
+      <mat-error
+        *ngIf="studentForm.controls.surname.errors && studentForm.controls.surname.errors.required"
+      >Это обязательное поле
+      </mat-error>
+      <mat-error
+        *ngIf="studentForm.controls.surname.errors && studentForm.controls.surname.errors.pattern"
+      >Введите текст
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
       <mat-label>Имя</mat-label>
       <input type="text" matInput placeholder="Введите имя" formControlName="name">
+      <mat-error
+        *ngIf="studentForm.controls.name.errors && studentForm.controls.name.errors.required"
+      >Это обязательное поле
+      </mat-error>
+      <mat-error
+        *ngIf="studentForm.controls.name.errors && studentForm.controls.name.errors.pattern"
+      >Введите текст
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
       <mat-label>Отчество</mat-label>
       <input type="text" matInput placeholder="Введите отчество" formControlName="patronymic">
+      <mat-error
+        *ngIf="studentForm.controls.patronymic.errors && studentForm.controls.patronymic.errors.required"
+      >Это обязательное поле
+      </mat-error>
+      <mat-error
+        *ngIf="studentForm.controls.patronymic.errors && studentForm.controls.patronymic.errors.pattern"
+      >Введите текст
+      </mat-error>
     </mat-form-field>
     <button mat-flat-button color="primary" (click)="afterEdit()">Применить</button>
     <button mat-flat-button color="warn" (click)="deleteStudent(studentForm.value.id)">Удалить</button>

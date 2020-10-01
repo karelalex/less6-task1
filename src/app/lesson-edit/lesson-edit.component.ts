@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 
 import {LessonService} from '../lesson.service';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {dateValidator} from '../validators';
 
 @Component({
   selector: 'app-lesson-edit',
@@ -11,10 +12,17 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class LessonEditComponent implements OnChanges {
   lessonForm: FormGroup = new FormGroup({
     id: new FormControl(''),
-    number: new FormControl(),
-    date: new FormControl(),
-    theme: new FormControl(),
-    homework: new FormControl(),
+    number: new FormControl(
+      undefined,
+        [
+          Validators.required,
+          Validators.min(1),
+          Validators.pattern(/^(\d+)$/)
+        ]
+    ),
+    date: new FormControl(undefined, [Validators.required, dateValidator]),
+    theme: new FormControl(undefined, [Validators.required, Validators.pattern(/[А-Яа-я]+/)]),
+    homework: new FormControl(undefined, [Validators.required, Validators.pattern(/[А-Яа-я]+/)]),
     notes: new FormControl()
   });
   constructor(private lessonService: LessonService) {
