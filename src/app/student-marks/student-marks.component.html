@@ -1,6 +1,6 @@
 <div>
   <form [formGroup]="marksForm">
-    <table mat-table [dataSource]="tableDS" class="mainTable" #markTable>
+    <table mat-table [dataSource]="tableDS" class="mainTable" #markTable formArrayName="students">
       <ng-container matColumnDef="number">
         <th mat-header-cell *matHeaderCellDef> No.</th>
         <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>

@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} fr
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {Student, StudentService} from '../student.service';
 import {Lesson, LessonService} from '../lesson.service';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-student-marks',
@@ -12,7 +12,7 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 export class StudentMarksComponent implements OnInit{
   @Output() editStudent = new EventEmitter<string>();
   marks = [1, 2, 3, 4, 5];
-  marksForm: FormArray;
+  marksForm: FormGroup;
   columns = [];
   columnsToDisplay = ['number', 'student', 'average', 'averageInt', 'edit'];
   constructor(
@@ -34,7 +34,8 @@ export class StudentMarksComponent implements OnInit{
   }
 
   initMarksForm(): void {
-    const fromGroup = this.build.array(this.studentService.students.map(
+    const fromGroup = this.build.group({
+      students: this.build.array(this.studentService.students.map(
         student => {
           return this.build.group({
             id: [student.id],
@@ -48,17 +49,17 @@ export class StudentMarksComponent implements OnInit{
             weakAverage: [this.studentService.calculateAverage(student)]
           });
         }
-      ));
+    ))});
     console.log(fromGroup);
     this.marksForm = fromGroup;
   }
 
   get tableDS(): MatTableDataSource<any>{
-    return new MatTableDataSource(this.marksForm.controls);
+    return new MatTableDataSource((this.marksForm.controls.students as FormArray).controls);
   }
 
 saveStudent = (id) => {
-    const student = this.marksForm.value.find((item) => item.id === id);
+    const student = this.marksForm.value.students.find((item) => item.id === id);
     if (student) {
       this.studentService.addStudent(student);
     }
