@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 
-import {EditingLesson, Lesson, LessonService} from '../lesson.service';
+import {LessonService} from '../lesson.service';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-lesson-edit',
@@ -8,11 +9,17 @@ import {EditingLesson, Lesson, LessonService} from '../lesson.service';
   styleUrls: ['./lesson-edit.component.css']
 })
 export class LessonEditComponent implements OnChanges {
-
+  lessonForm: FormGroup = new FormGroup({
+    id: new FormControl(''),
+    number: new FormControl(),
+    date: new FormControl(),
+    theme: new FormControl(),
+    homework: new FormControl(),
+    notes: new FormControl()
+  });
   constructor(private lessonService: LessonService) {
     this.prepareForm(null);
   }
-  editingLesson: EditingLesson;
 
   @Input() lessonId: string;
   @Output() finishEdit = new EventEmitter();
@@ -26,11 +33,12 @@ export class LessonEditComponent implements OnChanges {
   }
 
   prepareForm = (id) => {
-   this.editingLesson = this.lessonService.getLessonById(id);
+   this.lessonForm.reset();
+   this.lessonForm.patchValue(this.lessonService.getLessonById(id));
   }
 
   afterEdit = () => {
-    this.lessonService.addLesson(this.editingLesson);
+    this.lessonService.addLesson(this.lessonForm.value);
     this.prepareForm(null);
     this.finishEdit.emit();
   }

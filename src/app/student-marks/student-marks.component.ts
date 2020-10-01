@@ -1,49 +1,79 @@
-import {Component, EventEmitter, Input, OnChanges, Output, ViewChild} from '@angular/core';
-import {MatTable} from '@angular/material/table';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {Student, StudentService} from '../student.service';
 import {Lesson, LessonService} from '../lesson.service';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-student-marks',
   templateUrl: './student-marks.component.html',
   styleUrls: ['./student-marks.component.css']
 })
-export class StudentMarksComponent{
+export class StudentMarksComponent implements OnInit{
   @Output() editStudent = new EventEmitter<string>();
-  @Output() changedStudentList = new EventEmitter<Student[]>();
   marks = [1, 2, 3, 4, 5];
+  marksForm: FormArray;
+  columns = [];
+  columnsToDisplay = ['number', 'student', 'average', 'averageInt', 'edit'];
   constructor(
     public studentService: StudentService,
-    private lessonService: LessonService
+    private lessonService: LessonService,
+    private build: FormBuilder
     ) { }
   @ViewChild('studentTable') studentTable: MatTable<Student>;
 
-  get columnsToDisplay(): string[] {
-    return ['number', 'student', ...this.columns.map(i => i.name), 'average', 'averageInt', 'edit'];
-  }
-
-  get columns(): { name: string; header: { date: string; theme: string } }[] {
-    return  this.lessonService.lessons.map((item) => ({
+  initColumns(): void{
+    this.columns = this.lessonService.lessons.map((item) => ({
       name: item.id,
       header: {
         date: item.date.toLocaleDateString(),
         theme: item.theme
       }
     }));
+    this.columnsToDisplay = ['number', 'student', ...this.columns.map(i => i.name), 'average', 'averageInt', 'edit'];
   }
 
-  get tableStudents(): Student[] {
-    return [...this.studentService.students];
+  initMarksForm(): void {
+    const fromGroup = this.build.array(this.studentService.students.map(
+        student => {
+          return this.build.group({
+            id: [student.id],
+            name: [student.name],
+            surname: [student.surname],
+            patronymic: [student.patronymic],
+            marks: this.build.group(this.lessonService.lessons.reduce(
+              (acc , cur) => ({...acc, [cur.id]: [student.marks[cur.id]]}), {}
+            )),
+            average: [this.studentService.calculateAverage(student, 2)],
+            weakAverage: [this.studentService.calculateAverage(student)]
+          });
+        }
+      ));
+    console.log(fromGroup);
+    this.marksForm = fromGroup;
   }
 
-  saveStudent = (id) => {
-    const student = this.tableStudents.find((item) => item.id === id);
+  get tableDS(): MatTableDataSource<any>{
+    return new MatTableDataSource(this.marksForm.controls);
+  }
+
+saveStudent = (id) => {
+    const student = this.marksForm.value.find((item) => item.id === id);
     if (student) {
       this.studentService.addStudent(student);
     }
   }
 
-  editRow(id: string): void {
+editRow(id: string): void {
     this.editStudent.emit(id);
+  }
+
+  ngOnInit(): void {
+    this.initMarksForm();
+    this.initColumns();
+    this.lessonService.lessonUpdater.subscribe(() => {
+      this.initMarksForm();
+      this.initColumns();
+    });
   }
 }

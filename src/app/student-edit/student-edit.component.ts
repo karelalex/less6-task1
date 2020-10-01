@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, Output, SimpleChanges, EventEmitter} from '@angular/core';
 import {Student, StudentService} from '../student.service';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-student-edit',
@@ -9,9 +10,13 @@ import {Student, StudentService} from '../student.service';
 export class StudentEditComponent implements OnChanges {
   @Input() studentId: string;
   @Output() finishEdit = new EventEmitter();
-  editingStudent = {} as Student;
   constructor(private studentService: StudentService) { }
-
+  studentForm: FormGroup = new FormGroup({
+    id: new FormControl(''),
+    name: new FormControl(),
+    surname: new FormControl(),
+    patronymic: new FormControl(),
+  });
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.studentId) {return; }
     const currentStudentId = changes.studentId.currentValue;
@@ -21,11 +26,12 @@ export class StudentEditComponent implements OnChanges {
   }
 
   prepareForm = (id: string): void => {
-    this.editingStudent = this.studentService.getStudentById(id);
+    this.studentForm.reset();
+    this.studentForm.patchValue(this.studentService.getStudentById(id));
   }
 
   afterEdit = () => {
-    this.studentService.addStudent(this.editingStudent);
+    this.studentService.addStudent(this.studentForm.value);
     this.prepareForm(null);
     this.finishEdit.emit();
   }

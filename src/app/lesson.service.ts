@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {v4 as uuidV4} from 'uuid';
 import moment from 'moment';
 
 export interface Lesson {
   id: string;
+  number?: number;
   date?: Date;
   theme?: string;
   homework?: string;
@@ -13,6 +14,7 @@ export interface Lesson {
 export interface EditingLesson {
   id: string;
   date?: string;
+  number?: number;
   theme?: string;
   homework?: string;
   notes?: string;
@@ -23,7 +25,7 @@ export interface EditingLesson {
 })
 export class LessonService {
   lessons: Lesson[] = [];
-
+  lessonUpdater: EventEmitter<null> = new EventEmitter();
   constructor() {
     this.loadLessons();
   }
@@ -57,8 +59,9 @@ export class LessonService {
     this.saveLessonList(newLessonsList);
 }
   saveLessonList = (list: Lesson[]): void => {
-    localStorage.setItem('lessonList', JSON.stringify(list.sort((a, b) => (a.date.getTime() - b.date.getTime()))));
+    localStorage.setItem('lessonList', JSON.stringify(list.sort((a, b) => (a.number - b.number))));
     this.lessons = list;
+    this.lessonUpdater.emit();
   }
 
   deleteLesson = (id) => {

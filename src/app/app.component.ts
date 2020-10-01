@@ -7,7 +7,7 @@ import {MatTabGroup} from '@angular/material/tabs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'less4-task1';
+  title = 'less6-task2';
   @ViewChild('Tabs') tabs: MatTabGroup;
   tabIndex: number;
   editingLessonId: string;

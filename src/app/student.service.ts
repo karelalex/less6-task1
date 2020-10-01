@@ -27,7 +27,7 @@ export class StudentService {
     if (index < 0) {
       newStudentsList.push({...student, marks: {}});
     } else {
-      newStudentsList[index] = {...student};
+      newStudentsList[index] = {...newStudentsList[index], ...student};
     }
     this.saveStudentList(newStudentsList);
   }

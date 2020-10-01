@@ -1,17 +1,19 @@
 <div class="editableForm">
-  <mat-form-field class="full-width">
-    <mat-label>Фамилия</mat-label>
-    <input type="text" matInput placeholder="Введите фамилию" [(ngModel)]="editingStudent.surname">
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>Имя</mat-label>
-    <input type="text" matInput placeholder="Введите имя" [(ngModel)]="editingStudent.name">
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <mat-label>Отчество</mat-label>
-    <input type="text" matInput placeholder="Введите отчество" [(ngModel)]="editingStudent.patronymic">
-  </mat-form-field>
-  <button mat-flat-button color="primary" (click)="afterEdit()">Применить</button>
-  <button mat-flat-button color="warn" (click)="deleteStudent(editingStudent.id)">Удалить</button>
-  <button mat-flat-button color="basic" (click)="cancelEdit()">Отменить</button>
+  <form [formGroup]="studentForm">
+    <mat-form-field class="full-width">
+      <mat-label>Фамилия</mat-label>
+      <input type="text" matInput placeholder="Введите фамилию" formControlName="surname">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Имя</mat-label>
+      <input type="text" matInput placeholder="Введите имя" formControlName="name">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Отчество</mat-label>
+      <input type="text" matInput placeholder="Введите отчество" formControlName="patronymic">
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="afterEdit()">Применить</button>
+    <button mat-flat-button color="warn" (click)="deleteStudent(studentForm.value.id)">Удалить</button>
+    <button mat-flat-button color="basic" (click)="cancelEdit()">Отменить</button>
+  </form>
 </div>
