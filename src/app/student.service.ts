@@ -1,4 +1,4 @@
-import {Injectable, OnInit} from '@angular/core';
+import {EventEmitter, Injectable, OnInit} from '@angular/core';
 import {v4 as uuidV4} from 'uuid';
 export interface Student {
   id: string;
@@ -12,6 +12,7 @@ export interface Student {
   providedIn: 'root'
 })
 export class StudentService {
+  studentUpdater: EventEmitter<null> = new EventEmitter();
   students: Student[] = [];
   constructor() {
     this.loadStudents();
@@ -37,6 +38,7 @@ export class StudentService {
     localStorage.setItem('studentList', JSON.stringify(newStudentsList.sort((a, b) =>
       (this.formatName(a).localeCompare(this.formatName(b))))));
     this.students = newStudentsList;
+    this.studentUpdater.emit();
   }
 
   deleteStudent = (id) => {

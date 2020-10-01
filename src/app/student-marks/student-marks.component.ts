@@ -76,5 +76,8 @@ editRow(id: string): void {
       this.initMarksForm();
       this.initColumns();
     });
+    this.studentService.studentUpdater.subscribe(() => {
+      this.initMarksForm();
+    });
   }
 }
